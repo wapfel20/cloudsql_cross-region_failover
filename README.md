@@ -23,3 +23,10 @@ What does the script do?
   
   Migration vs Disaster Recovery
   - This script was designed with Disaster Recovery in mind but a planned "Regional Migration" is no different. It can be used for this scenario as well.
+  
+  Using the script via Cloud Shell
+  - To use this script via cloud shell or any other shell:
+    - In the Google Cloud Console (console.google.com) or on your own device, open a terminal window
+    - clone the repository into your working directory
+    - Run one of the scripts (standard or no delete) using "bash" - ex. bash sqlFailover.sh
+    - Look for prompts and instructions in the terminal. It will guide you through the failover process.
