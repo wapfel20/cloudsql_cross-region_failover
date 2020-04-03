@@ -160,7 +160,7 @@ then
 
     replicaZones=()
 
-    #Build replicaZones Array and capture data
+    #Build replicaZones array and capture data
     if [ "$totalReplicas" != 0 ] 
     then 
         counter=1 
