@@ -1,11 +1,11 @@
 #!/bin/bash
 
-#Set preject variables
+#Set project variables
 gcloud auth login
 read -p 'Please provide Project ID for the project that your instance is located in:' project
 gcloud config set project $project
 
-#Make a temp directory and file to store the JSON output from Gcloud
+#Make a temp directory and file to store the JSON output from gcloud
 mkdir tempFiles
 touch tempFiles/instanceDetails.json
 touch tempFiles/instanceDetails-dr.json
@@ -94,10 +94,10 @@ primaryFailoverReplica=$primaryNameNoQuotes-1
 
 echo "Data pull complete."
 
-#create an array for the replicas to be stored in
+#Create an array for the replicas to be stored in
 replicas=()
 
-#check each replica variable to see if it's null and if not, add it to array
+#Check each replica variable to see if it's null and if not, add it to array
 echo "Checking for replicas..."
 
 if [ "$replica1" != "null" ]
@@ -121,13 +121,13 @@ then
     fi
 fi
 
-#count the total number of replicas for deletion / reprovisioning purposes
+#Count the total number of replicas for deletion / reprovisioning purposes
 totalReplicas="$(("${#replicas[*]}"-1))"
 
 
 echo "We found $totalReplicas replicas in addition to the replica you've specified."
 
-#ask user to confirm the action since it is irreversable
+#Ask user to confirm the action since it is irreversable
 read -p 'You are attempting to failover from $primaryInstance in $primaryRegion to $drInstance in $drRegion. This is an irreversible action, please type Yes to proceed: ' acceptance
 
 if [ "$acceptance" = "Yes" ]
@@ -142,8 +142,8 @@ then
     gcloud sql instances patch $drInstance --availability-type REGIONAL --enable-bin-log --backup-start-time=$backupStartTime --maintenance-window-day=$maintenanceWindowDay --maintenance-window-hour=$maintenanceWindowHour
 
     #Give the instance matching CPU and Memory 
-        #(note: I have decided not to add this step since by default, a replica recevies the same vCPU and Memory configuraiton as its master)
-        #To add this step, just use $primaryTier, $primaryDataDiskSizeGb, and $primaryDataDiskType variables
+    #(note: I have decided not to add this step since by default, a replica recevies the same vCPU and Memory configuraiton as its master)
+    #To add this step, just use $primaryTier, $primaryDataDiskSizeGb, and $primaryDataDiskType variables
 
     #Pass back new connection info (name and IP)
     echo "Your new connection string for your Primary Instance is $drConnectionString and your new IP Address is $drIP."
@@ -160,7 +160,7 @@ then
 
     replicaZones=()
 
-    #Build replicaZones Array and capture data
+    #Build replicaZones array and capture data
     if [ "$totalReplicas" != 0 ] 
     then 
         counter=1 
@@ -180,9 +180,9 @@ then
 
 
     #Recreate replicas in primary location using primary name 
-        #Need to loop through old replicas before they are deleted and grab their region and zone
-        #Then reprovision them
-        #Then pass back connectionName and IPs of each
+    #Need to loop through old replicas before they are deleted and grab their region and zone
+    #Then reprovision them
+    #Then pass back connectionName and IPs of each
 
     echo "Provisioning replicas back in your primary region."
     if [ "$totalReplicas" != 0 ]
